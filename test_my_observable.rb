@@ -125,4 +125,25 @@ class TestMyObservable < MiniTest::Test
       ticker.run(2)
     end
   end
+
+  class EmailObserver
+    def update(*)
+      puts 'Email sent'
+    end
+  end
+
+  class ChatObserver
+    def update(*)
+      puts 'Chat sent'
+    end
+  end
+
+  def test_dual_observers
+    observable = TestObservable.new
+    observable.add_observer(EmailObserver.new)
+    observable.add_observer(ChatObserver.new)
+    assert_output "Email sent\nChat sent\n" do
+      observable.notify
+    end
+  end
 end
