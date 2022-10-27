@@ -146,4 +146,25 @@ class TestMyObservable < MiniTest::Test
       observable.notify
     end
   end
+
+  class MyObserver
+    def my_update(*)
+      puts 'my_update called'
+    end
+  end
+
+  class AnotherObserver
+    def another_update(*)
+      puts 'another_update called'
+    end
+  end
+
+  def test_observable_different_func
+    observable = TestObservable.new
+    observable.add_observer(MyObserver.new, :my_update)
+    observable.add_observer(AnotherObserver.new, :another_update)
+    assert_output "my_update called\nanother_update called\n" do
+      observable.notify
+    end
+  end
 end
